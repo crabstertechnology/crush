@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #fce4ec;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: #d81b60;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #c2185b;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            animation: bounce 2s ease infinite;
+        }
+        
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #f48fb1;
+            opacity: 0;
+            animation: float 5s linear infinite;
+        }
+        
+        .message-box {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 500px;
+            transition: transform 0.3s ease;
+        }
+        
+        .message-box:hover {
+            transform: scale(1.05);
+        }
+        
+        .quote {
+            font-style: italic;
+            color: #ad1457;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        button {
+            background-color: #f06292;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        button:hover {
+            background-color: #ec407a;
+            transform: scale(1.05);
+        }
+        
+        .heart-btn {
+            font-size: 2rem;
+            background-color: transparent;
+            color: #e91e63;
+            margin: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .special-message {
+            display: none;
+            font-size: 1.5rem;
+            color: #c2185b;
+            margin: 30px auto;
+            animation: fadeIn 2s ease;
+        }
+        
+        .pet {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .pet:hover {
+            transform: scale(1.2);
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: rotate(-5deg);
+            display: inline-block;
+            margin: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .photo-placeholder {
+            width: 200px;
+            height: 150px;
+            background-color: #f8bbd0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .photo-text {
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .music-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .music-btn:hover {
+            background-color: #7b1fa2;
+            transform: scale(1.05);
+        }
+        
+        .music-controls {
+            margin: 20px auto;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .music-note {
+            position: absolute;
+            font-size: 24px;
+            color: #9c27b0;
+            opacity: 0;
+            animation: floatNote 3s linear infinite;
+        }
+        
+        @keyframes floatNote {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .letter {
+            display: inline-block;
+            animation: wave 2s infinite;
+            animation-delay: calc(0.1s * var(--i));
+        }
+        
+        @keyframes wave {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        /* New styles for image resizing */
+        .image-container {
+            margin: 20px auto;
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .resize-controls {
+            margin: 10px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .resize-btn {
+            background-color: #5e35b1;
+            margin: 0 5px;
+        }
+        
+        #pet-image {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Styles for gifts and roses */
+        .gift-container {
+            display: none;
+            margin: 30px auto;
+            animation: fadeIn 1s ease;
+        }
+        
+        .gift {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 3rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .gift:hover {
+            transform: scale(1.2);
+        }
+        
+        .gift-reveal {
+            display: none;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 400px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .rose-garden {
+            display: none;
+            margin: 30px auto;
+            animation: fadeIn 1s ease;
+        }
+        
+        .rose {
+            display: inline-block;
+            margin: 5px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .rose:hover {
+            transform: scale(1.2) rotate(15deg);
+        }
+        
+        .love-meter {
+            display: none;
+            margin: 30px auto;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease;
+        }
+        
+        .meter-container {
+            width: 100%;
+            height: 30px;
+            background-color: #f8bbd0;
+            border-radius: 15px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #e91e63;
+            transition: width 2s ease;
+            border-radius: 15px;
+        }
+        
+        .interactive-menu {
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .menu-btn {
+            margin: 5px;
+            background-color: #5e35b1;
+        }
+        
+        .falling-rose {
+            position: absolute;
+            font-size: 24px;
+            animation: fallingRose 5s linear forwards;
+            z-index: -1;
+        }
+        
+        @keyframes fallingRose {
+            0% {
+                transform: translateY(-50px) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="music-controls">
+        <button id="play-music" class="music-btn">🎵 Play Music</button>
+        <button id="pause-music" class="music-btn" style="display:none;">⏸️ Pause Music</button>
+    </div>
+    
+    <audio id="background-music" loop>
+        <source src="Adiyae-Azhagae.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <div class="container">
+        <h1>
+            <span class="letter" style="--i:1">F</span>
+            <span class="letter" style="--i:2">o</span>
+            <span class="letter" style="--i:3">r</span>
+            <span class="letter" style="--i:4"> </span>
+            <span class="letter" style="--i:5">S</span>
+            <span class="letter" style="--i:6">o</span>
+            <span class="letter" style="--i:7">m</span>
+            <span class="letter" style="--i:8">e</span>
+            <span class="letter" style="--i:9">o</span>
+            <span class="letter" style="--i:10">n</span>
+            <span class="letter" style="--i:11">e</span>
+            <span class="letter" style="--i:12"> </span>
+            <span class="letter" style="--i:13">S</span>
+            <span class="letter" style="--i:14">p</span>
+            <span class="letter" style="--i:15">e</span>
+            <span class="letter" style="--i:16">c</span>
+            <span class="letter" style="--i:17">i</span>
+            <span class="letter" style="--i:18">a</span>
+            <span class="letter" style="--i:19">l</span>
+        </h1>
+        
+        <div class="interactive-menu">
+            <button id="show-quotes" class="menu-btn">💬 Sweet Quotes</button>
+            <button id="show-gifts" class="menu-btn">🎁 Send Gifts</button>
+            <button id="show-roses" class="menu-btn">🌹 Rose Garden</button>
+            <button id="show-love-meter" class="menu-btn">❤️ Love Meter</button>
+        </div>
+        
+        
+        <div class="message-box" id="main-message">
+            <p>Every time I see you, my heart skips a beat...</p>
+            <p>Click the buttons above to explore different ways I feel about you!</p>
+            
+            <button id="heart-btn" class="heart-btn">❤️</button>
+            <button id="reset-btn">Start Over</button>
+        </div>
+        
+        <div id="quotes-container">
+            <div class="quote">"In a world full of people, my eyes will always search for you."</div>
+            <div class="quote">"You're the first thought in my morning and the last thought in my night."</div>
+            <div class="quote">"Some people search their whole lives to find what I found in you."</div>
+            <div class="quote">"If I know what love is, it's because of you."</div>
+            <div class="quote">"You make my heart smile."</div>
+        </div>
+        
+        <!-- New Image Container with Resize Controls -->
+        <div class="image-container">
+            <img id="pet-image" src="s.jpg" alt="Someone special" />
+            <div class="resize-controls">
+                <button id="smaller-btn" class="resize-btn">➖</button>
+                <button id="reset-size-btn" class="resize-btn">⚪</button>
+                <button id="larger-btn" class="resize-btn">➕</button>
+            </div>
+        </div>
+        
+        <!-- Gift Section -->
+        <div class="gift-container" id="gift-container">
+            <h2>Choose a Gift to Reveal</h2>
+            <div id="gifts">
+                <span class="gift" data-gift="I promise to always be there for you">🎁</span>
+                <span class="gift" data-gift="A thousand hugs and kisses just for you">💝</span>
+                <span class="gift" data-gift="A day trip to your favorite place">🎫</span>
+                <span class="gift" data-gift="A romantic dinner at sunset">🍽️</span>
+                <span class="gift" data-gift="A weekend getaway, just the two of us">✈️</span>
+            </div>
+            <div class="gift-reveal" id="gift-reveal"></div>
+        </div>
+        
+        <!-- Rose Garden Section -->
+        <div class="rose-garden" id="rose-garden">
+            <h2>Pick a Rose to Show Your Love</h2>
+            <div id="roses">
+                <span class="rose" data-color="red">🌹</span>
+                <span class="rose" data-color="pink">🌷</span>
+                <span class="rose" data-color="white">🌸</span>
+                <span class="rose" data-color="yellow">🌻</span>
+                <span class="rose" data-color="purple">💐</span>
+            </div>
+        </div>
+        
+        <!-- Love Meter Section -->
+        <div class="love-meter" id="love-meter">
+            <h2>Our Love Meter</h2>
+            <p>Click to see how much I adore you!</p>
+            <div class="meter-container">
+                <div class="meter-fill" id="meter-fill"></div>
+            </div>
+            <p id="meter-message">Click the meter to measure our love!</p>
+        </div>
+        
+        <div class="special-message" id="special-message">
+            <p>I've been wanting to tell you how much you mean to me.</p>
+            <p>Would you like to spend more time together?</p>
+            <button id="yes-btn">Yes!</button>
+            <button id="maybe-btn">Maybe...</button>
+        </div>
+        
+        <div class="special-message" id="final-message">
+            <p>You've made me the happiest person!</p>
+            <p>Looking forward to our journey together ❤️</p>
+        </div>
+    </div>
+    
+    <script>
+        // Create floating hearts animation
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartSymbols = ['❤️', '💕', '💓', '💗', '💖'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heartsContainer.appendChild(heart);
+                
+                // Remove hearts after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 300);
+        }
+        
+        // Create music notes animation
+        function createMusicNotes() {
+            const heartsContainer = document.getElementById('hearts');
+            const noteSymbols = ['♪', '♫', '🎵', '🎶'];
+            
+            setInterval(() => {
+                const note = document.createElement('div');
+                note.classList.add('music-note');
+                note.style.left = Math.random() * 100 + 'vw';
+                note.style.animationDuration = Math.random() * 2 + 2 + 's';
+                note.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+                heartsContainer.appendChild(note);
+                
+                // Remove notes after animation completes
+                setTimeout(() => {
+                    note.remove();
+                }, 3000);
+            }, 800);
+        }
+        
+        // Create falling roses animation
+        function createFallingRoses() {
+            const heartsContainer = document.getElementById('hearts');
+            const roseSymbols = ['🌹', '🌷', '🌸', '🌺', '💮'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const rose = document.createElement('div');
+                    rose.classList.add('falling-rose');
+                    rose.style.left = Math.random() * 100 + 'vw';
+                    rose.style.animationDuration = Math.random() * 5 + 3 + 's';
+                    rose.textContent = roseSymbols[Math.floor(Math.random() * roseSymbols.length)];
+                    heartsContainer.appendChild(rose);
+                    
+                    // Remove roses after animation completes
+                    setTimeout(() => {
+                        rose.remove();
+                    }, 8000);
+                }, i * 300);
+            }
+        }
+        
+        // Music controls
+        function setupMusic() {
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.volume = 0.5; // Set volume to 50%
+        }
+        
+        let isPlaying = false;
+        
+        function playMusic() {
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.play();
+            isPlaying = true;
+            
+            document.getElementById('play-music').style.display = 'none';
+            document.getElementById('pause-music').style.display = 'inline-block';
+        }
+        
+        function pauseMusic() {
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.pause();
+            isPlaying = false;
+            
+            document.getElementById('play-music').style.display = 'inline-block';
+            document.getElementById('pause-music').style.display = 'none';
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            createHearts();
+            createMusicNotes();
+            setupMusic();
+            
+            const quotes = document.querySelectorAll('.quote');
+            const heartBtn = document.getElementById('heart-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const specialMessage = document.getElementById('special-message');
+            const finalMessage = document.getElementById('final-message');
+            const yesBtn = document.getElementById('yes-btn');
+            const maybeBtn = document.getElementById('maybe-btn');
+            const playMusicBtn = document.getElementById('play-music');
+            const pauseMusicBtn = document.getElementById('pause-music');
+            
+            // Menu buttons
+            const showQuotesBtn = document.getElementById('show-quotes');
+            const showGiftsBtn = document.getElementById('show-gifts');
+            const showRosesBtn = document.getElementById('show-roses');
+            const showLoveMeterBtn = document.getElementById('show-love-meter');
+            
+            // Containers
+            const quotesContainer = document.getElementById('quotes-container');
+            const giftContainer = document.getElementById('gift-container');
+            const roseGarden = document.getElementById('rose-garden');
+            const loveMeter = document.getElementById('love-meter');
+            
+            // Image resize controls
+            const petImage = document.getElementById('pet-image');
+            const smallerBtn = document.getElementById('smaller-btn');
+            const resetSizeBtn = document.getElementById('reset-size-btn');
+            const largerBtn = document.getElementById('larger-btn');
+            
+            let currentScale = 1;
+            let currentQuote = -1;
+            let petCount = 0;
+            
+            // Hide all special sections initially
+            quotesContainer.querySelectorAll('.quote').forEach(quote => {
+                quote.style.display = 'none';
+            });
+            giftContainer.style.display = 'none';
+            roseGarden.style.display = 'none';
+            loveMeter.style.display = 'none';
+            
+            // Music controls
+            playMusicBtn.addEventListener('click', playMusic);
+            pauseMusicBtn.addEventListener('click', pauseMusic);
+            
+            // Menu button event listeners
+            showQuotesBtn.addEventListener('click', () => {
+                hideAllSections();
+                showNextQuote();
+            });
+            
+            showGiftsBtn.addEventListener('click', () => {
+                hideAllSections();
+                giftContainer.style.display = 'block';
+            });
+            
+            showRosesBtn.addEventListener('click', () => {
+                hideAllSections();
+                roseGarden.style.display = 'block';
+            });
+            
+            showLoveMeterBtn.addEventListener('click', () => {
+                hideAllSections();
+                loveMeter.style.display = 'block';
+            });
+            
+            function hideAllSections() {
+                quotes.forEach(quote => {
+                    quote.style.display = 'none';
+                });
+                giftContainer.style.display = 'none';
+                roseGarden.style.display = 'none';
+                loveMeter.style.display = 'none';
+            }
+            
+            // Show next quote
+            function showNextQuote() {
+                quotes.forEach(quote => {
+                    quote.style.display = 'none';
+                });
+                
+                currentQuote = (currentQuote + 1) % quotes.length;
+                quotes[currentQuote].style.display = 'block';
+            }
+            
+            // Heart button animation
+            heartBtn.addEventListener('click', () => {
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.classList.add('heart');
+                        heart.style.left = (45 + Math.random() * 10) + 'vw';
+                        heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                        heart.textContent = '❤️';
+                        document.getElementById('hearts').appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 6000);
+                    }, i * 100);
+                }
+                
+                // Increase pet count when heart is clicked
+                petCount++;
+                if (petCount >= 3) {
+                    specialMessage.style.display = 'block';
+                }
+            });
+            
+            // Reset everything
+            resetBtn.addEventListener('click', () => {
+                hideAllSections();
+                specialMessage.style.display = 'none';
+                finalMessage.style.display = 'none';
+                document.getElementById('gift-reveal').style.display = 'none';
+                currentQuote = -1;
+                petCount = 0;
+                resetImageSize();
+            });
+            
+            // Image resize functionality
+            smallerBtn.addEventListener('click', () => {
+                if (currentScale > 0.5) {
+                    currentScale -= 0.1;
+                    petImage.style.transform = `scale(${currentScale})`;
+                }
+            });
+            
+            resetSizeBtn.addEventListener('click', resetImageSize);
+            
+            largerBtn.addEventListener('click', () => {
+                if (currentScale < 1.5) {
+                    currentScale += 0.1;
+                    petImage.style.transform = `scale(${currentScale})`;
+                }
+            });
+            
+            function resetImageSize() {
+                currentScale = 1;
+                petImage.style.transform = 'scale(1)';
+            }
+            
+            // Pet image interaction (same as old pet behavior)
+            petImage.addEventListener('click', () => {
+                petImage.style.transform = `scale(${currentScale * 1.2})`;
+                setTimeout(() => {
+                    petImage.style.transform = `scale(${currentScale})`;
+                }, 300);
+                
+                petCount++;
+                
+                if (petCount >= 3) {
+                    specialMessage.style.display = 'block';
+                }
+            });
+            
+            // Yes button
+            yesBtn.addEventListener('click', () => {
+                specialMessage.style.display = 'none';
+                finalMessage.style.display = 'block';
+                
+                // Extra heart celebration
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.classList.add('heart');
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                        heart.textContent = '❤️';
+                        document.getElementById('hearts').appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 6000);
+                    }, i * 50);
+                }
+                
+                // Create falling roses for celebration
+                createFallingRoses();
+                
+                // Play music if not already playing
+                if (!isPlaying) {
+                    playMusic();
+                }
+            });
+            
+            // Maybe button
+            maybeBtn.addEventListener('click', () => {
+                specialMessage.style.display = 'none';
+                
+                // Show a random quote to convince them
+                quotes.forEach(quote => {
+                    quote.style.display = 'none';
+                });
+                
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                quotes[randomIndex].style.display = 'block';
+                
+                // Show special message again after delay
+                setTimeout(() => {
+                    specialMessage.style.display = 'block';
+                }, 3000);
+            });
+            
+            // Gift functionality
+            const gifts = document.querySelectorAll('.gift');
+            const giftReveal = document.getElementById('gift-reveal');
+            
+            gifts.forEach(gift => {
+                gift.addEventListener('click', () => {
+                    const giftMessage = gift.getAttribute('data-gift');
+                    giftReveal.innerHTML = `<p>My gift to you:</p><h3>${giftMessage}</h3><p>❤️ With all my love ❤️</p>`;
+                    giftReveal.style.display = 'block';
+                    
+                    // Small heart burst around the gift
+                    for (let i = 0; i < 10; i++) {
+                        setTimeout(() => {
+                            const heart = document.createElement('div');
+                            heart.classList.add('heart');
+                            heart.style.left = (45 + Math.random() * 10) + 'vw';
+                            heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+                            heart.textContent = '❤️';
+                            document.getElementById('hearts').appendChild(heart);
+                            
+                            setTimeout(() => {
+                                heart.remove();
+                            }, 4000);
+                        }, i * 100);
+                    }
+                });
+            });
+            
+            // Rose garden functionality
+            const roses = document.querySelectorAll('.rose');
+            
+            roses.forEach(rose => {
+                rose.addEventListener('click', () => {
+                    // Create rose shower effect
+                    const color = rose.getAttribute('data-color');
+                    const heartsContainer = document.getElementById('hearts');
+                    
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            const fallingRose = document.createElement('div');
+                            fallingRose.classList.add('falling-rose');
+                            fallingRose.style.left = Math.random() * 100 + 'vw';
+                            fallingRose.style.animationDuration = Math.random() * 5 + 3 + 's';
+                            fallingRose.textContent = rose.textContent;
+                            heartsContainer.appendChild(fallingRose);
+                            
+                            setTimeout(() => {
+                                fallingRose.remove();
+                            }, 8000);
+                        }, i * 100);
+                    }
+                });
+            });
+            
+            // Love meter functionality
+            const meterFill = document.getElementById('meter-fill');
+            const meterMessage = document.getElementById('meter-message');
+            const meterContainer = document.querySelector('.meter-container');
+            
+            meterContainer.addEventListener('click', () => {
+                // Animate the meter filling up
+                meterFill.style.width = '0%';
+                setTimeout(() => {
+                    meterFill.style.width = '100%';
+                }, 100);
+                
+                // Change message once full
+                setTimeout(() => {
+                    meterMessage.textContent = "Our love is infinite! ❤️";
+                }, 2000);
+            });
+            
+            // Initialize everything
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set up all event listeners and initializations
+                setupMusic();
+                createHearts();
+                createMusicNotes();
+            });
+        });
+        
+        // Secret message functionality - type "love" to trigger
+        let keySequence = '';
+        document.addEventListener('keydown', (e) => {
+            keySequence += e.key.toLowerCase();
+            keySequence = keySequence.slice(-4); // Keep only the last 4 keys
+            
+            if (keySequence === 'love') {
+                // Create a special effect and message
+                const secretMessage = document.createElement('div');
+                secretMessage.className = 'message-box';
+                secretMessage.style.position = 'fixed';
+                secretMessage.style.top = '50%';
+                secretMessage.style.left = '50%';
+                secretMessage.style.transform = 'translate(-50%, -50%)';
+                secretMessage.style.zIndex = '1000';
+                secretMessage.style.padding = '20px';
+                secretMessage.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                secretMessage.innerHTML = '<h2>You found the secret message!</h2>' +
+                                         '<p>You mean everything to me. Every day with you is a blessing.</p>' + 
+                                         '<p>I hope we can create countless memories together.</p>' +
+                                         '<button id="close-secret">Close</button>';
+                document.body.appendChild(secretMessage);
+                
+                // Add event listener to close button
+                document.getElementById('close-secret').addEventListener('click', () => {
+                    secretMessage.remove();
+                });
+                
+                // Create a special heart explosion
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.classList.add('heart');
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                        heart.textContent = '❤️';
+                        document.getElementById('hearts').appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 6000);
+                    }, i * 30);
+                }
+                
+                // Reset key sequence
+                keySequence = '';
+                
+                // Play music if not already playing
+                if (!isPlaying) {
+                    playMusic();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
